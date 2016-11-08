@@ -1,3 +1,7 @@
+"
+" Cutdown version of https://github.com/tlhunter/vimrc
+"
+
 call pathogen#infect()
 let mapleader = "\<Space>"
 set nocompatible
@@ -50,9 +54,6 @@ cmap w!! %!sudo tee > /dev/null %
 
 " F2 = Paste Toggle (in insert mode, pasting indented text behavior changes)
 set pastetoggle=<F2>
-
-" The search for the perfect color scheme...
-map <silent> <Leader>x :RandomColorScheme<CR>
 
 " <Leader>v = Paste
 map <Leader>v "+gP
@@ -238,129 +239,3 @@ let g:airline_right_sep=''
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = ' '
-
-
-"------  GUI Options  ------
-if has("gui_running")
-	" Hides toolbar and scrollbars and File menu
-	set guioptions=egt
-
-	" Highlights the current line background
-	set cursorline
-	colorscheme hybrid
-
-	"autocmd VimEnter * TagbarOpen
-
-	" Open VIM in fullscreen window
-	set lines=200 columns=500
-
-	" Toggle fullscreen
-	map <silent> <leader>w :set lines=200 columns=500<CR>
-
-	" Build all help tags (slower launch, but I run GUI vim like once per day)
-	call pathogen#helptags()
-
-	silent! cd $HOME/Projects
-
-	if has("gui_macvim") " OS X
-		"set guifont=Monaco:h14
-		set guifont=Monaco:h10
-		set noantialias
-		"set transparency=15
-
-		" Swipe to move between bufers :D
-		map <silent> <SwipeLeft> :bprev<CR>
-		map <silent> <SwipeRight> :bnext<CR>
-
-		" Cmd+Shift+N = new buffer
-		map <silent> <D-N> :enew<CR>
-
-		" Cmd+P = CtrlP
-		" TODO: This doesn't actually work, still opens Print dialog
-		macmenu File.Print key=<nop>
-		nnoremap <silent> <D-p> :CtrlP<CR>
-
-		" Cmd+t = new tab
-		nnoremap <silent> <D-t> :tabnew<CR>
-
-		" Cmd+w = close tab (this should happen by default)
-		nnoremap <silent> <D-w> :tabclose<CR>
-
-		" Cmd+1...9 = go to that tab
-		map <silent> <D-1> 1gt
-		map <silent> <D-2> 2gt
-		map <silent> <D-3> 3gt
-		map <silent> <D-4> 4gt
-		map <silent> <D-5> 5gt
-		map <silent> <D-6> 6gt
-		map <silent> <D-7> 7gt
-		map <silent> <D-8> 8gt
-		map <silent> <D-9> 9gt
-
-		" OS X probably has ctags in a weird place
-		let g:tagbar_ctags_bin='/usr/local/bin/ctags'
-
-		" Damn you scrollwheel paste
-		nnoremap <MiddleMouse> <Nop>
-		nnoremap <2-MiddleMouse> <Nop>
-		nnoremap <3-MiddleMouse> <Nop>
-		nnoremap <4-MiddleMouse> <Nop>
-
-		inoremap <MiddleMouse> <Nop>
-		inoremap <2-MiddleMouse> <Nop>
-		inoremap <3-MiddleMouse> <Nop>
-		inoremap <4-MiddleMouse> <Nop>
-
-		" Pair Program mode, so that my coworkers can read my screen ;)
-		nnoremap <leader>p :call PairProgramMode()<cr>
-		function! PairProgramMode()
-			if g:pair_program_mode
-				let g:pair_program_mode = 0
-				set guifont=Monaco:h10
-				set noantialias
-				set lines=200 columns=500
-			else
-				set guifont=Monaco:h15
-				set antialias
-				set lines=200 columns=500
-				let g:pair_program_mode = 1
-			endif
-		endfunction
-
-	elseif has("gui_gtk2") " Linux
-		set guifont=monospace\ 9
-
-		" Alt+n = new buffer
-		map <silent> <A-n> :enew<CR>
-
-		" Alt+t = new tab
-		nnoremap <silent> <A-t> :tabnew<CR>
-
-		" Alt+w = close tab
-		nnoremap <silent> <A-w> :tabclose<CR>
-
-		" Alt+1...9 = go to that tab
-		map <silent> <A-1> 1gt
-		map <silent> <A-2> 2gt
-		map <silent> <A-3> 3gt
-		map <silent> <A-4> 4gt
-		map <silent> <A-5> 5gt
-		map <silent> <A-6> 6gt
-		map <silent> <A-7> 7gt
-		map <silent> <A-8> 8gt
-		map <silent> <A-9> 9gt
-
-	elseif has("gui_win32") " Windows
-		" WHAT ARE YOU DOING WITH YOUR LIFE?!
-	endif
-else
-	set t_Co=256
-	colorscheme Mustang
-	set mouse=a
-endif
-
-
-"------  Local Overrides  ------
-if filereadable($HOME.'/.vimrc_local')
-	source $HOME/.vimrc_local
-endif
